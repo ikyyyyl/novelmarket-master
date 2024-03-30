@@ -104,5 +104,7 @@ Route::prefix('/admin')->group(function(){
 Auth::routes();
 Route::middleware(['web'])->group(function () {
     Route::match(['get', 'post'], '/my-panel', [MyPanelController::class, 'index'])->name('my-panel');
+    Route::post('/update-user', [MyPanelController::class, 'updateUser'])->name('update-user');
+
 });
 //auth

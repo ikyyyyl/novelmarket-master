@@ -19,7 +19,7 @@
                         @endif
                     </div>
                     <!-- Form for editing user information -->
-                    <form method="POST" action="{{ route('my-panel') }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('update-user') }}" enctype="multipart/form-data">
                         @csrf
                         <!-- Editable name field -->
                         <div class="form-group">
