@@ -21,17 +21,17 @@
                 <tbody>
                     @foreach ($suppliers as $supplier)
                     <tr>
-                        <th>{{ $supplier->supplier_name }}</th>
-                        <th>{{ $supplier->contact_number }}</th>
-                        <th>{{ $supplier->address }}</th>
-                        <th>
+                        <td>{{ $supplier->supplier_name }}</td>
+                        <td>{{ $supplier->contact_number }}</td>
+                        <td>{{ $supplier->address }}</td>
+                        <td>
                             @if ($supplier->image_path)
-                            <img src="{{ asset($supplier->image_path) }}" alt="Supplier Image" style="max-width: 100px; max-height: 100px;">
+                            <img src="{{ asset('images/users/' . $supplier->image_path) }}" alt="Supplier Image" width = "160" height = "160">
                             @else
                             No Image
                             @endif
-                        </th>
-                        <th>{{ $supplier->prod_id }}</th>
+                        </td>
+                        <td>{{ $supplier->prod_id }}</td>
                     </tr>
                     @endforeach
                 </tbody>

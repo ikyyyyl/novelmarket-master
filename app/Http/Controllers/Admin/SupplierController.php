@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class SupplierController extends Controller
 {
@@ -35,31 +36,12 @@ class SupplierController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        try {
-            // Validate form data
-            $validatedData = $request->validate([
-                'supplier_name' => 'required|string|max:255',
-                'contact_number' => 'required|email|unique:users,email',
-                'address' => 'required|string|min:255',
-                'image_path' => 'required|string|max:200',
-                'prod_id' => 'required|numeric',
-            ]);
-
-            // Create supplier
-            $supplier = new Supplier();
-            $supplier->supplier_name = $validatedData['supplier_name'];
-            $supplier->contact_number = $validatedData['contact_num'];
-            $supplier->address = $validatedData['address'];
-            $supplier->image_path = $validatedData['image_path'];
-            $supplier->prod_id = $validatedData['prod_id'];
-            $supplier->save();
+    public function store(Request $request){
+        
+        $validator = $this->validateAddForm($request);
+        $this->doStore($validator);
 
             return redirect()->route('admin.suppliers.all')->with('simpleSuccessAlert', 'Supplier added successfully');
-        } catch (\Exception $e) {
-            return back()->withInput()->withErrors(['failed_storage' => 'Failed to store supplier.']);
-        }
     }
     /**
      * Show form for editing the specified supplier.
@@ -79,8 +61,11 @@ class SupplierController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     public function update(Request $request, Supplier $supplier)
-    {
+     public function update(Supplier $supplier, Request $request){
+        $validator = $this->validateUpdateForm($request);
+
+        $this->doUpdate($product , $validator);
+
         try {
             // Validate form data
             $validatedData = $request->validate([
@@ -103,23 +88,19 @@ class SupplierController extends Controller
             return redirect()->route('admin.suppliers.all')->with('simpleSuccessAlert', 'Supplier updated successfully');
         } catch (\Exception $e) {
             return back()->withInput()->withErrors(['failed_update' => 'Failed to update supplier.']);
-        }
-    }
+        }    }
     /**
      * Remove specified user from storage.
      *
      * @param  \App\Models\Supplier $supplier
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Supplier $supplier)
-    {
-        try {
-            $user->delete();
+    public function destroy(Supplier $supplier){
+        File::delete(public_path("\images\users\\$supplier->image_path"));
 
-            return redirect()->route('admin.suppliers.all')->with('simpleSuccessAlert', 'Supplier removed successfully');
-        } catch (\Exception $e) {
-            return back()->withErrors(['failed_delete' => 'Failed to delete supplier.']);
-        }
+        $supplier->delete();
+
+        return back()->with('simpleSuccessAlert' , 'Supplier removed successfully');
     }
     
 }

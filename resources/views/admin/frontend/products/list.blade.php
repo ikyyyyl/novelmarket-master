@@ -31,7 +31,7 @@
                   <th>{{ $product->author }}</th>
                   <th>{{ substr($product->description , 0 , 15) . '...' }}</th>
                   <th>
-                    <img src="{{ asset('public/'.$product->demo_url) }}" alt="Demo Image" width="160" height="160"> 
+                  <img src="{{ asset('images/products/' . $product->demo_url) }}" alt="Demo Image" width="160" height="160">
                     |
                     <a href="{{ $product->demo_url }}" download id="a-black"><span class="ti-download"></span></a>
                   </th>

@@ -30,7 +30,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col">
-                        <input value="{{ $supplier->image_path }}" name="image_path" type="file" class="form-control" placeholder="image_path">
+                        <input value="{{ $supplier->image_path }}" name="image_path" type="file" class="form-control" placeholder="image_path" aria-label="image_path">
                     </div>
                     <div class="col">
                         <input value="{{ $supplier->prod_id }}" name="prod_id" type="text" class="form-control" placeholder="Product ID" aria-label="prod_id">
