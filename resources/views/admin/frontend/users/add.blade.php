@@ -29,6 +29,9 @@
                             <option value="admin">Admin</option>
                         </select>
                     </div>
+                    <div class="col">
+                        <input name="image_path" class="form-control" type="file">
+                    </div>
                 </div>
             </div>
             <div class="card-body">

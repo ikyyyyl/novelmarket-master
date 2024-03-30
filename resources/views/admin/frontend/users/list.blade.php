@@ -29,7 +29,9 @@
                   <th>{{ $user->role }}</th>
                   <th>{{ $user->phone_number }}</th>
                   <th>{{ $user->address }}</th>
-                  <th>{{ $user->image_path }}</th>
+                  <th>
+                    <img src="{{ asset('storage/'.$user->image_path) }}" alt="User Image" width="160" height="160"> 
+                  | </th>
                   <th>{{ $user->created_at }}</th>
                   <th>
                     <form action="{{ route('admin.users.destroy' , $user->id ) }}" method="POST" id="prepare-form">

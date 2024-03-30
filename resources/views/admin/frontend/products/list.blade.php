@@ -31,9 +31,9 @@
                   <th>{{ $product->author }}</th>
                   <th>{{ substr($product->description , 0 , 15) . '...' }}</th>
                   <th>
-                    <a href="{{ config('urls.images_products_url') . $product->demo_url }}" id="a-black"><span class="ti-link"></span></a>
+                    <img src="{{ asset('public/'.$product->demo_url) }}" alt="Demo Image" width="160" height="160"> 
                     |
-                    <a href="{{ route('admin.products.download.demo' , $product->id)}}" id="a-black"><span class="ti-download"></span></a>
+                    <a href="{{ $product->demo_url }}" download id="a-black"><span class="ti-download"></span></a>
                   </th>
                   <th>${{ $product->price }}</th>
                   <th>{{ $product->stock }}</th>
