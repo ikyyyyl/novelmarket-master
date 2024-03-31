@@ -29,9 +29,6 @@
                             <option value="admin">Admin</option>
                         </select>
                     </div>
-                    <div class="col">
-                        <input name="image_path" class="form-control" type="file">
-                    </div>
                 </div>
             </div>
             <div class="card-body">
@@ -41,6 +38,9 @@
                     </div>
                     <div class="col">
                         <input name="address" type="text" class="form-control" placeholder="Address" aria-label="address">
+                    </div>
+                    <div class="col">
+                            <input name="image_path" type="file" accept="image/*" aria-label="image_path">
                     </div>
                 </div>
             </div>

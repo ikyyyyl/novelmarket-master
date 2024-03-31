@@ -1,13 +1,12 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Admin - Suppliers')
+@section('title', 'Admin-Suppliers')
 
 @section('content')
-{{-- Suppliers table start --}}
-<div class="col-12 mt-5">
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">List of Suppliers</h5>
+<!-- Suppliers table start -->
+<div class="main-content-inner">
+    <div class="row">
+            <h5 class="card-title"><b>LIST OF SUPPLIERS</b></h5><br>
             <table class="table">
                 <thead>
                     <tr>
@@ -26,17 +25,30 @@
                         <td>{{ $supplier->address }}</td>
                         <td>
                             @if ($supplier->image_path)
-                            <img src="{{ asset('images/users/' . $supplier->image_path) }}" alt="Supplier Image" width = "160" height = "160">
+                            <img src="{{ asset('images/' . $supplier->image_path) }}" alt="Supplier Image" width = "160" height = "160">
                             @else
                             No Image
                             @endif
                         </td>
                         <td>{{ $supplier->prod_id }}</td>
+                        <th>
+                        <form action="{{ route('admin.suppliers.destroy' , $supplier->id ) }}" method="POST" id="prepare-form">
+                      @csrf
+                      @method('delete')
+                        <button type="submit" id="button-delete"><span class="ti-trash"></span></button>
+                        </form>
+                        |
+                        <a href="{{ route('admin.users.edit' , $supplier->id) }}" id="a-black"><span class="ti-pencil"></span></a>
+                        </th>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
-        </div>
+            <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center">
+            {{ $suppliers->links() }}
+          </ul>
+        </nav>  
     </div>
 </div>
 

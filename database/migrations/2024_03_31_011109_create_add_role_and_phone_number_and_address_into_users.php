@@ -19,7 +19,7 @@ return new class extends Migration{
         });
     }
 
-    /**
+    /** add_role_and_phone_number_and_address_into_users
      * Reverse the migrations.
      *
      * @return void

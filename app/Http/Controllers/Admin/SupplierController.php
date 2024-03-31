@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Supplier;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
 
 class SupplierController extends Controller
 {
@@ -27,7 +29,9 @@ class SupplierController extends Controller
      */
     public function create()
     {
-        return view('admin.frontend.suppliers.add');
+        $products = Product::all();
+        //dd($products);
+        return view('admin.frontend.suppliers.add', compact('products'));
     }
 
     /**
@@ -37,17 +41,29 @@ class SupplierController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
-        
         $validator = $this->validateAddForm($request);
-        $this->doStore($validator);
 
-            return redirect()->route('admin.suppliers.all')->with('simpleSuccessAlert', 'Supplier added successfully');
+        if ($validator->fails()) {
+        return back()
+            ->withErrors($validator)
+            ->withInput();
     }
+    $supplier = new Supplier();
+    $supplier->supplier_name = $request->input('supplier_name');
+    $supplier->contact_number = $request->input('contact_number');
+    $supplier->address = $request->input('address');
+    // Handle image upload if needed
+    $supplier->image_path = (string) $request->input('image_path');
+    $supplier->prod_id = $request->input('prod_id');
+    $supplier->save();
+
+    return redirect()->route('admin.suppliers.all')->with('simpleSuccessAlert', 'Supplier created successfully');
+}
     /**
      * Show form for editing the specified supplier.
-     *
-     * @param  \App\Models\Supplier $supplier
-     * @return \Illuminate\Http\Response
+    * @param  \Illuminate\Http\Request  $request
+    * @param  \App\Models\Supplier $supplier
+    * @return \Illuminate\Http\Response
      */
     public function edit(Supplier $supplier)
     {
@@ -64,31 +80,23 @@ class SupplierController extends Controller
      public function update(Supplier $supplier, Request $request){
         $validator = $this->validateUpdateForm($request);
 
-        $this->doUpdate($product , $validator);
+        if ($validator->fails()) {
+        return back()
+            ->withErrors($validator)
+            ->withInput();
+    }
 
-        try {
-            // Validate form data
-            $validatedData = $request->validate([
-                'supplier_name' => 'required|string|max:255',
-                'contact_number' => 'required|email|unique:users,email',
-                'address' => 'required|string|min:255',
-                'image_path' => 'nullable|string|max:200',
-                'prod_id' => 'disabled|numeric',
-            ]);
-
-            // Create supplier
-            $supplier = new Supplier();
-            $supplier->supplier_name = $validatedData['supplier_name'];
-            $supplier->contact_number = $validatedData['contact_num'];
-            $supplier->address = $validatedData['address'];
-            $supplier->image_path = $validatedData['image_path'];
-            $supplier->prod_id = $validatedData['prod_id'];
-            $supplier->save();
-
-            return redirect()->route('admin.suppliers.all')->with('simpleSuccessAlert', 'Supplier updated successfully');
-        } catch (\Exception $e) {
-            return back()->withInput()->withErrors(['failed_update' => 'Failed to update supplier.']);
-        }    }
+            // If validation passes, update the supplier
+        $supplier->supplier_name = $request->input('supplier_name');
+        $supplier->contact_number = $request->input('contact_number');
+        $supplier->address = $request->input('address');
+            // Handle image upload if needed
+        $supplier->image_path = (string) $request->input('image_path');
+        $supplier->prod_id = $request->input('prod_id');
+        $supplier->save();
+    
+    return redirect()->route('admin.suppliers.all')->with('simpleSuccessAlert', 'Supplier updated successfully');
+}
     /**
      * Remove specified user from storage.
      *
@@ -103,4 +111,31 @@ class SupplierController extends Controller
         return back()->with('simpleSuccessAlert' , 'Supplier removed successfully');
     }
     
+    /**
+     * Validate form data for adding a new supplier.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function validateAddForm(Request $request)
+    {
+        return Validator::make($request->all(), [
+            'supplier_name' => 'required|string|max:255',
+            'contact_number' => 'required|integer|max:20',
+            'address' => 'required|string|max:255',
+            'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'prod_id' => 'required|numeric',
+        ]);
+    }
+
+    protected function validateUpdateForm(Request $request)
+{
+        return Validator::make($request->all(), [
+            'supplier_name' => 'required|string|max:255',
+            'contact_number' => 'required|integer|max:20',
+            'address' => 'required|string|max:255',
+            'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'prod_id' => 'required|numeric',
+        ]);
+}
 }

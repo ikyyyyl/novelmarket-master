@@ -43,6 +43,7 @@ class UserController extends Controller
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
                 'email' => 'required|email|unique:users,email',
+                'image_path' => 'required|string|max:2048',
                 'password' => 'required|string|min:6',
                 'role' => 'required|in:user,admin',
                 'phone-number' => 'required|string|max:20', // Changed field name to match HTML form
@@ -53,6 +54,7 @@ class UserController extends Controller
             $user = new User();
             $user->name = $validatedData['name'];
             $user->email = $validatedData['email'];
+            $user->image_path = $validatedData['image_path'];
             $user->password = bcrypt($validatedData['password']);
             $user->role = $validatedData['role'];
             $user->phone_number = $validatedData['phone-number']; // Updated field name to match database column
@@ -64,6 +66,7 @@ class UserController extends Controller
             return back()->withInput()->withErrors(['failed_storage' => 'Failed to store user.']);
         }
     }
+
     /**
      * Show form for editing the specified user.
      *
@@ -89,6 +92,7 @@ class UserController extends Controller
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
                 'email' => 'required|email|unique:users,email,' . $user->id,
+                'image_path' => 'required|string|max:2048',
                 'role' => 'required|in:user,admin',
                 'phone-number' => 'required|string|max:20', // Changed field name to match HTML form
                 'address' => 'required|string|max:255',
@@ -97,6 +101,7 @@ class UserController extends Controller
             // Update user
             $user->name = $validatedData['name'];
             $user->email = $validatedData['email'];
+            $user->image_path = $validatedData['image_path'];
             $user->role = $validatedData['role'];
             $user->phone_number = $validatedData['phone-number']; // Updated field name to match database column
             $user->address = $validatedData['address'];

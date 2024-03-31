@@ -6,7 +6,7 @@
 {{-- Add user form start --}}
 <div class="col-12 mt-5">
     <div class="card">
-    <h5 class="card-title">Add a Supplier</h5>
+    <h5 class="card-title"><b>CREATE A SUPPLIER</b></h5>
         <form action="{{ route('admin.suppliers.store')}}" method="POST" enctype="multipart/form-data">
         @csrf
             <div class="card-body">
@@ -26,9 +26,13 @@
                     </div>
                     <div class="col">
                             <input name="image_path" type="file" accept="image/*" aria-label="image_path">
-                    </div>
+                    </div><br><br>
                     <div class="col">
-                        <input name="prod_id" type="text" class="form-control" placeholder="Product ID" aria-label="prod_id">
+                        <select name="prod_id" class="form-control" >
+                            @foreach($products as $product)
+                            <option value="{{ $product->id }}">{{ $product->id }}</option>
+                            @endforeach
+                        </select>
                     </div>
             </div><br>
             <div class="d-grid gap-2 col-6 mx-auto">
