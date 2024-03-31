@@ -3,10 +3,10 @@
 @section('title' , 'Admin-Add user')
 
 @section('content')
-{{-- Add user form start --}}
+<!-- Add user form start -->
 <div class="col-12 mt-5">
     <div class="card">
-        <form action="{{ route('admin.users.store')}}" method="POST">
+        <form action="{{ route('admin.users.store')}}" method="POST" enctype="multipart/form-data">
         @csrf
             <div class="card-body">
                 <div class="row">
@@ -14,7 +14,7 @@
                         <input name="name" type="text" class="form-control" placeholder="Name" aria-label="name">
                     </div>
                     <div class="col">
-                        <input name="email" type="email" class="form-control" placeholder="Email" aria-label="email">
+                        <input name="email" type="text" class="form-control" placeholder="Email" aria-label="email">
                     </div>
                 </div>
             </div>
@@ -50,5 +50,5 @@
         </form>
     </div>
 </div>
-{{-- Add user form end --}}
+<!-- Add user form end -->
 @endsection

@@ -48,12 +48,17 @@ class SupplierController extends Controller
             ->withErrors($validator)
             ->withInput();
     }
-    $supplier = new Supplier();
-    $supplier->supplier_name = $request->input('supplier_name');
-    $supplier->contact_number = $request->input('contact_number');
-    $supplier->address = $request->input('address');
-    // Handle image upload if needed
-    $supplier->image_path = (string) $request->input('image_path');
+        $supplier = new Supplier();
+        $supplier->supplier_name = $request->input('supplier_name');
+        $supplier->contact_number = $request->input('contact_number');
+        $supplier->address = $request->input('address');
+         // Handle profile picture update if a new image is uploaded
+         if ($request->hasFile('image_path')) {
+        // Store the new image and update the user's image_path
+        $imagePath = $request->file('image_path')->store('supplier_images', 'public');
+        $supplier->image_path = $imagePath;
+    }
+
     $supplier->prod_id = $request->input('prod_id');
     $supplier->save();
 
@@ -67,6 +72,7 @@ class SupplierController extends Controller
      */
     public function edit(Supplier $supplier)
     {
+        //$supplier = Supplier::findOrFail($id);
         return view('admin.frontend.suppliers.edit', compact('supplier'));
     }
     /**
@@ -76,7 +82,6 @@ class SupplierController extends Controller
      * @param  \App\Models\Supplier $supplier
      * @return \Illuminate\Http\Response
      */
-
      public function update(Supplier $supplier, Request $request){
         $validator = $this->validateUpdateForm($request);
 
@@ -85,18 +90,23 @@ class SupplierController extends Controller
             ->withErrors($validator)
             ->withInput();
     }
+    $user = new User();
+    $user->name = $request->input('name');
+    $user->email = $request->input('email');
+    if ($request->hasFile('image_path')) {
+        // Store the new image and update the user's image_path
+        $imagePath = $request->file('image_path')->store('profile-images', 'public');
+        $user->image_path = $imagePath;
+    }
+    $user->image_path = $request->input('image_path');
+    $user->password = $request->input('password');
+    $user->role = $request->input('role');
+    $user->phone_number = $request->input('phone_number');
+    $user->address = $validatedData['address'];
+    $user->save();
 
-            // If validation passes, update the supplier
-        $supplier->supplier_name = $request->input('supplier_name');
-        $supplier->contact_number = $request->input('contact_number');
-        $supplier->address = $request->input('address');
-            // Handle image upload if needed
-        $supplier->image_path = (string) $request->input('image_path');
-        $supplier->prod_id = $request->input('prod_id');
-        $supplier->save();
-    
-    return redirect()->route('admin.suppliers.all')->with('simpleSuccessAlert', 'Supplier updated successfully');
-}
+    return redirect()->route('admin.users.all')->with('simpleSuccessAlert', 'Supplier added successfully');
+} 
     /**
      * Remove specified user from storage.
      *
@@ -121,21 +131,21 @@ class SupplierController extends Controller
     {
         return Validator::make($request->all(), [
             'supplier_name' => 'required|string|max:255',
-            'contact_number' => 'required|integer|max:20',
+            'contact_number' => 'required|digits_between:1,20', // Adjusted to reflect VARCHAR(20) in the database
             'address' => 'required|string|max:255',
             'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'prod_id' => 'required|numeric',
         ]);
     }
-
+    
     protected function validateUpdateForm(Request $request)
-{
+    {
         return Validator::make($request->all(), [
             'supplier_name' => 'required|string|max:255',
-            'contact_number' => 'required|integer|max:20',
+            'contact_number' => 'required|digits_between:1,20', // Adjusted to reflect VARCHAR(20) in the database
             'address' => 'required|string|max:255',
             'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'prod_id' => 'required|numeric',
         ]);
-}
+    }
 }

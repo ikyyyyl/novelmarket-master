@@ -30,7 +30,7 @@
                   <th>{{ $user->phone_number }}</th>
                   <th>{{ $user->address }}</th>
                   <th>
-                    <img src="{{ asset('storage/'.$user->image_path) }}" alt="User Image" width="160" height="160"> 
+                  <img src="{{ asset('storage/' . $user->image_path) }}" alt="Profile Image" width="160" height="160">
                   | </th>
                   <th>{{ $user->created_at }}</th>
                   <th>

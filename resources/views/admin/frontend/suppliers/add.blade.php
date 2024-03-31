@@ -3,7 +3,7 @@
 @section('title' , 'Admin-Add supplier')
 
 @section('content')
-{{-- Add user form start --}}
+<!-- Add user form start -->
 <div class="col-12 mt-5">
     <div class="card">
     <h5 class="card-title"><b>CREATE A SUPPLIER</b></h5>
@@ -41,5 +41,5 @@
         </form>
     </div>
 </div>
-{{-- Add user form end --}}
+<!-- Add user form end -->
 @endsection

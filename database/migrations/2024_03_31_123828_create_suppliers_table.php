@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateSuppliersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -16,13 +16,12 @@ return new class extends Migration
         Schema::create('suppliers', function (Blueprint $table) {
             $table->id();
             $table->string('supplier_name');
-            $table->integer('contact_number');
+            $table->string('contact_number', 20); // Assuming contact numbers are stored as strings
             $table->string('address');
             $table->string('image_path')->nullable();
             $table->unsignedBigInteger('prod_id')->nullable();
             $table->foreign('prod_id')->references('id')->on('products')->onDelete('cascade');
             $table->timestamps();
-
         });
     }
 
@@ -33,11 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('suppliers', function (Blueprint $table) {
-            // Drop foreign key constraint if exists
-            $table->dropForeign(['prod_id']);
-        });
-
         Schema::dropIfExists('suppliers');
     }
-};
+}

@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\productController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\SupplierController;
+use App\Http\Controllers\Admin\ExpensesController;
 use App\Http\Controllers\MyPanelController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\PaymentController as ControllersPaymentController;
@@ -89,6 +90,15 @@ Route::prefix('/admin')->group(function(){
         Route::delete('/{supplier}/remove' , [SupplierController::class , 'destroy'])->name('admin.suppliers.destroy');
         Route::get('/{supplier}/edit' , [SupplierController::class , 'edit'])->name('admin.suppliers.edit');
         Route::put('/{supplier}/update' , [SupplierController::class , 'update'])->name('admin.suppliers.update');
+});
+    /* For expenses */
+    Route::prefix('/expenses')->group(function(){
+        Route::get('' , [ExpensesController::class , 'all'])->name('admin.expenses.all');
+        Route::get('/create' , [ExpensesController::class , 'create'])->name('admin.expenses.create');
+        Route::post('' , [ExpensesController::class , 'store'])->name('admin.expenses.store');
+        Route::delete('/{expense}/remove' , [ExpensesController::class , 'destroy'])->name('admin.expenses.destroy');
+        Route::get('/{expense}/edit' , [ExpensesController::class , 'edit'])->name('admin.expenses.edit');
+        Route::put('/{expense}/update' , [ExpensesController::class , 'update'])->name('admin.expenses.update');
 });
     /* For orders */
     Route::prefix('/orders')->group(function(){
