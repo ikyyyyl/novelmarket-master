@@ -46,34 +46,26 @@ class UserController extends Controller
             ->withErrors($validator)
             ->withInput();
     }
-            // // Validate form data
-            // $validatedData = $request->validate([
-            //     'name' => 'required|string|max:255',
-            //     'email' => 'required|email|unique:users,email',
-            //     'image_path' => 'required|string|max:2048',
-            //     'password' => 'required|string|min:6',
-            //     'role' => 'required|in:user,admin',
-            //     'phone-number' => 'required|string|max:20', // Changed field name to match HTML form
-            //     'address' => 'required|string|max:255',
-            // ]);
-
             // Create user
             $user = new User();
             $user->name = $request->input('name');
             $user->email = $request->input('email');
-            if ($request->hasFile('image_path')) {
-                // Store the new image and update the user's image_path
-                $imagePath = $request->file('image_path')->store('profile-images', 'public');
-                $user->image_path = $imagePath;
-            }
-            $user->image_path = $request->input('image_path');
             $user->password = $request->input('password');
             $user->role = $request->input('role');
             $user->phone_number = $request->input('phone_number');
-            $user->address = $validatedData['address'];
+            $user->address = $validatedData['address']; // Assuming $validatedData contains the validated address
+            if ($request->hasFile('image_path')) {
+                // Store the new image and update the user's image_path
+            $imagePath = $request->file('image_path')->store('profile_images', 'public');
+            $user->image_path = $imagePath;
+            } else {
+                // If no image is uploaded, you may want to set a default image path or leave it as null
+                // $user->image_path = 'default-image-path.jpg'; // Example of setting a default image path
+            $user->image_path = null; // Or leave it as null
+            }
             $user->save();
 
-            return redirect()->route('admin.users.all')->with('simpleSuccessAlert', 'User added successfully');
+        return redirect()->route('admin.users.all')->with('simpleSuccessAlert', 'User added successfully');
         } 
     /**
      * Show form for editing the specified user.
@@ -94,31 +86,34 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(User $user, Request $request)
-    {
-        $validator = $this->validateAddForm($request);
+{
+    $validator = $this->validateUpdateForm($request);
 
-        if ($validator->fails()) {
+    if ($validator->fails()) {
         return back()
             ->withErrors($validator)
             ->withInput();
     }
-    $user = new User();
+
+    // Update user details
     $user->name = $request->input('name');
     $user->email = $request->input('email');
-    if ($request->hasFile('image_path')) {
-        // Store the new image and update the user's image_path
-        $imagePath = $request->file('image_path')->store('profile-images', 'public');
-        $user->image_path = $imagePath;
-    }
-    $user->image_path = $request->input('image_path');
     $user->password = $request->input('password');
     $user->role = $request->input('role');
     $user->phone_number = $request->input('phone_number');
-    $user->address = $validatedData['address'];
+    $user->address = $request->input('address');
+
+    if ($request->hasFile('image_path')) {
+        // Store the new image and update the user's image_path
+        $imagePath = $request->file('image_path')->store('profile_images', 'public');
+        $user->image_path = $imagePath;
+    }
+
     $user->save();
 
-    return redirect()->route('admin.users.all')->with('simpleSuccessAlert', 'User added successfully');
+    return redirect()->route('admin.users.all')->with('simpleSuccessAlert', 'User updated successfully');
 }
+
 
     /**
      * Remove specified user from storage.
@@ -146,7 +141,7 @@ class UserController extends Controller
         return Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'image_path' => 'required|string|max:2048',
+            'image_path' => 'required|string|max:4048',
             'password' => 'required|string|min:6',
             'role' => 'required|in:user,admin',
             'phone-number' => 'required|string|max:20', // Changed field name to match HTML form
@@ -159,7 +154,7 @@ class UserController extends Controller
         return Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'image_path' => 'required|string|max:2048',
+            'image_path' => 'required|string|max:4048',
             'password' => 'required|string|min:6',
             'role' => 'required|in:user,admin',
             'phone-number' => 'required|string|max:20', // Changed field name to match HTML form

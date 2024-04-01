@@ -90,23 +90,21 @@ class SupplierController extends Controller
             ->withErrors($validator)
             ->withInput();
     }
-    $user = new User();
-    $user->name = $request->input('name');
-    $user->email = $request->input('email');
-    if ($request->hasFile('image_path')) {
+    //$supplier = new Supplier();
+        $supplier->supplier_name = $request->input('supplier_name');
+        $supplier->contact_number = $request->input('contact_number');
+        $supplier->address = $request->input('address');
+         // Handle profile picture update if a new image is uploaded
+         if ($request->hasFile('image_path')) {
         // Store the new image and update the user's image_path
-        $imagePath = $request->file('image_path')->store('profile-images', 'public');
-        $user->image_path = $imagePath;
+        $imagePath = $request->file('image_path')->store('supplier_images', 'public');
+        $supplier->image_path = $imagePath;
     }
-    $user->image_path = $request->input('image_path');
-    $user->password = $request->input('password');
-    $user->role = $request->input('role');
-    $user->phone_number = $request->input('phone_number');
-    $user->address = $validatedData['address'];
-    $user->save();
+    $supplier->prod_id = $request->input('prod_id');
+    $supplier->save();
 
-    return redirect()->route('admin.users.all')->with('simpleSuccessAlert', 'Supplier added successfully');
-} 
+    return redirect()->route('admin.suppliers.all')->with('simpleSuccessAlert', 'Supplier created successfully');
+}
     /**
      * Remove specified user from storage.
      *
