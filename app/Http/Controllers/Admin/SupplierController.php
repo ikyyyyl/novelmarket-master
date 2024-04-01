@@ -72,8 +72,9 @@ class SupplierController extends Controller
      */
     public function edit(Supplier $supplier)
     {
-        //$supplier = Supplier::findOrFail($id);
-        return view('admin.frontend.suppliers.edit', compact('supplier'));
+        //$supplier = Supplier::findOrFail($id); // Assuming you have a Supplier model
+        $products = Product::all();
+        return view('admin.frontend.suppliers.edit', compact('supplier', 'products'));
     }
     /**
      * Update specified supplier in storage.
@@ -103,7 +104,7 @@ class SupplierController extends Controller
     $supplier->prod_id = $request->input('prod_id');
     $supplier->save();
 
-    return redirect()->route('admin.suppliers.all')->with('simpleSuccessAlert', 'Supplier created successfully');
+    return redirect()->route('admin.suppliers.all')->with('simpleSuccessAlert', 'Supplier updated successfully');
 }
     /**
      * Remove specified user from storage.

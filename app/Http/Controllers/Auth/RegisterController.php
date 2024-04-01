@@ -55,8 +55,8 @@ class RegisterController extends Controller{
     protected function create(array $data)
     {
         if (isset($data['image_path'])) {
-            $imagePath = $data['image_path']->store('public/storage/images');
-            $imagePath = str_replace('images/', '', $imagePath);
+            $imagePath = $data['image_path']->store('profile_images', 'public');
+            $imagePath = str_replace('profile_images', '', $imagePath);
         } else {
             $imagePath = null;
         }

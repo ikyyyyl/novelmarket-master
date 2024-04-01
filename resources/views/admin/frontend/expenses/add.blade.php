@@ -6,7 +6,7 @@
 <!-- Add user form start -->
 <div class="col-12 mt-5">
     <div class="card">
-        <form action="{{ route('admin.expenses.store')}}" method="POST">
+        <form action="{{ route('admin.expenses.store')}}" method="POST" enctype="multipart/form-data">
         @csrf
             <div class="card-body">
                 <div class="row">

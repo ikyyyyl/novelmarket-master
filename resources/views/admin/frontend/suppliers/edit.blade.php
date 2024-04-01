@@ -33,8 +33,13 @@
                         <input value="{{ $supplier->image_path }}" name="image_path" type="file" class="form-control" placeholder="image_path" aria-label="image_path">
                     </div>
                     <div class="col">
-                        <input value="{{ $supplier->prod_id }}" name="prod_id" type="text" class="form-control" placeholder="Product ID" aria-label="prod_id">
+                        <select name="prod_id" class="form-control">
+                        @foreach($products as $product)
+                        <option value="{{ $product->id }}">{{ $product->id }}</option>
+                        @endforeach
+                        </select>
                     </div>
+
                 </div>
             </div>
             <div class="d-grid gap-2 col-6 mx-auto">

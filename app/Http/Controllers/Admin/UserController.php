@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -53,14 +54,13 @@ class UserController extends Controller
             $user->password = $request->input('password');
             $user->role = $request->input('role');
             $user->phone_number = $request->input('phone_number');
-            $user->address = $validatedData['address']; // Assuming $validatedData contains the validated address
+            $user->address = $request->input('address'); 
             if ($request->hasFile('image_path')) {
                 // Store the new image and update the user's image_path
             $imagePath = $request->file('image_path')->store('profile_images', 'public');
             $user->image_path = $imagePath;
             } else {
-                // If no image is uploaded, you may want to set a default image path or leave it as null
-                // $user->image_path = 'default-image-path.jpg'; // Example of setting a default image path
+               
             $user->image_path = null; // Or leave it as null
             }
             $user->save();
@@ -75,6 +75,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        //$user = User::findOrFail($id);
         return view('admin.frontend.users.edit', compact('user'));
     }
 
@@ -85,30 +86,28 @@ class UserController extends Controller
      * @param  \App\Models\User $user
      * @return \Illuminate\Http\Response
      */
-    public function update(User $user, Request $request)
-{
-    $validator = $this->validateUpdateForm($request);
-
-    if ($validator->fails()) {
-        return back()
-            ->withErrors($validator)
-            ->withInput();
-    }
+    public function update(User $user, Request $request){
+        $validator = $this->validateUpdateForm($request);
+        // dd($user);
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
 
     // Update user details
-    $user->name = $request->input('name');
-    $user->email = $request->input('email');
-    $user->password = $request->input('password');
-    $user->role = $request->input('role');
-    $user->phone_number = $request->input('phone_number');
-    $user->address = $request->input('address');
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->password = $request->input('password');
+        $user->role = $request->input('role');
+        $user->phone_number = $request->input('phone_number');
+        $user->address = $request->input('address');
 
     if ($request->hasFile('image_path')) {
-        // Store the new image and update the user's image_path
+        
         $imagePath = $request->file('image_path')->store('profile_images', 'public');
         $user->image_path = $imagePath;
     }
-
     $user->save();
 
     return redirect()->route('admin.users.all')->with('simpleSuccessAlert', 'User updated successfully');
@@ -123,15 +122,15 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        File::delete(public_path("\images\users\\$supplier->image_path"));
+        File::delete(public_path("\images\users\\$user->image_path"));
 
-        $supplier->delete();
+        $user->delete();
 
         return back()->with('simpleSuccessAlert' , 'User removed successfully');
     }
 
     /**
-     * Validate form data for adding a new supplier.
+     * Validate form data for adding a new user.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Contracts\Validation\Validator
@@ -140,11 +139,11 @@ class UserController extends Controller
     {
         return Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'image_path' => 'required|string|max:4048',
+            'email' => 'required|email',
+            'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'password' => 'required|string|min:6',
             'role' => 'required|in:user,admin',
-            'phone-number' => 'required|string|max:20', // Changed field name to match HTML form
+            'phone_number' => 'required|string|max:20', // Changed field name to match HTML form
             'address' => 'required|string|max:255',
         ]);  
     }
@@ -153,14 +152,12 @@ class UserController extends Controller
     {
         return Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'image_path' => 'required|string|max:4048',
+            'email' => 'required|email',
+            'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'password' => 'required|string|min:6',
             'role' => 'required|in:user,admin',
-            'phone-number' => 'required|string|max:20', // Changed field name to match HTML form
+            'phone_number' => 'required|string|max:20', // Changed field name to match HTML form
             'address' => 'required|string|max:255',
         ]);
     }
 }
-
-

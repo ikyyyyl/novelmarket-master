@@ -6,7 +6,7 @@
 {{-- Edit user form start --}}
 <div class="col-12 mt-5">
     <div class="card">
-        <form action="{{ route('admin.users.update' , $user->id) }}" method="POST">
+        <form action="{{ route('admin.users.update' , $user->id) }}" method="POST" enctype="multipart/form-data">
         @method('put')
         @csrf
             <div class="card-body">
@@ -35,7 +35,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col">
-                        <input value="{{ $user->phone_number }}" name="phone-number" type="numeric" class="form-control" placeholder="Phone number" aria-label="phone-number">
+                        <input value="{{ $user->phone_number }}" name="phone_number" type="numeric" class="form-control" placeholder="Phone number" aria-label="phone_number">
                     </div>
                     <div class="col">
                         <input value="{{ $user->address }}" name="address" type="text" class="form-control" placeholder="Address" aria-label="address">

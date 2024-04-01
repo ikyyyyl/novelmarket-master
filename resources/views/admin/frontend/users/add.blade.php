@@ -1,11 +1,10 @@
 @extends('admin.layouts.app')
 
 @section('title' , 'Admin-Add user')
-
 @section('content')
-<!-- Add user form start -->
 <div class="col-12 mt-5">
     <div class="card">
+    <h5 class="card-title"><b>CREATE A USER</b></h5>
         <form action="{{ route('admin.users.store')}}" method="POST" enctype="multipart/form-data">
         @csrf
             <div class="card-body">
@@ -34,7 +33,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col">
-                        <input name="phone-number" type="numeric" class="form-control" placeholder="Phone number" aria-label="phone-number">
+                        <input name="phone_number" type="numeric" class="form-control" placeholder="Phone number" aria-label="phone_number">
                     </div>
                     <div class="col">
                         <input name="address" type="text" class="form-control" placeholder="Address" aria-label="address">
@@ -50,5 +49,4 @@
         </form>
     </div>
 </div>
-<!-- Add user form end -->
 @endsection

@@ -1,3 +1,4 @@
+
 @extends('admin.layouts.app')
 
 @section('title' , 'Admin-Expenses')
@@ -60,4 +61,3 @@
 </div>
 <!-- Expenses list end -->
 @endsection
-

@@ -46,17 +46,20 @@ class ExpensesController extends Controller
             ->withErrors($validator)
             ->withInput();
     }      
-        $expense = new Expenses();
-        $expense->expense_name = $request->input('expense_name');
-        $expense->expense_date = $request->input('expense_date');
-        $expense->expense_amount = $request->input('expense_amount');
-        $expense->expense_payment = $request->input('expense_payment');
-        // Handle expense image upload
-        if ($request->hasFile('expense_img')) {
-            $Expense_img = $request->file('expense_img')->store('expense_images', 'public');
-            $expense->expense_img = $Expense_img;
-        }
-        $expense->save();
+            $expense = new Expenses();
+            $expense->expense_name = $request->input('expense_name');
+            $expense->expense_date = $request->input('expense_date');
+            $expense->expense_amount = $request->input('expense_amount');
+            $expense->expense_payment = $request->input('expense_payment');
+            // Handle expense image upload
+            if ($request->hasFile('expense_img')) {
+            $Expense_images = $request->file('expense_img')->store('expense_images', 'public');
+            $expense->expense_img = $Expense_images;
+            } else {
+               
+            $expense->Expense_images = null;
+            }
+            $expense->save();
 
         return redirect()->route('admin.expenses.all')->with('simpleSuccessAlert', 'Expense added successfully');
     }
