@@ -17,6 +17,7 @@
                 <th>Address</th>
                 <th>Image</th>
                 <th>Joined</th>
+                <th>Status</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -31,15 +32,26 @@
                   <th>{{ $user->address }}</th>
                   <th>
                   <img src="{{ asset('storage/' . $user->image_path) }}" alt="Profile Image" width="160" height="160">
-                  | </th>
+           </th>
                   <th>{{ $user->created_at }}</th>
+                  <th>{{ $user->is_active ? 'Active' : 'Inactive' }}</th>
+                  <th>
+                      @if($user->is_active)
+                        <form action="{{ route('admin.users.deactivate', $user->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                          <button type="submit" class="btn btn-danger">Deactivate</button>
+                        </form>
+                      @else
+                        <span class="text-muted">Deactivated</span>
+                      @endif
+                  </th>
                   <th>
                     <form action="{{ route('admin.users.destroy' , $user->id ) }}" method="POST" id="prepare-form">
                       @csrf
                       @method('delete')
                         <button type="submit" id="button-delete"><span class="ti-trash"></span></button>
                     </form>
-                    |
                     <a href="{{ route('admin.users.edit' , $user->id) }}" id="a-black"><span class="ti-pencil"></span></a>
                   </th>
                 </tr>

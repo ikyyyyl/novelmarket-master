@@ -81,6 +81,8 @@ Route::prefix('/admin')->group(function(){
         Route::delete('/{user}/remove' , [UserController::class , 'destroy'])->name('admin.users.destroy');
         Route::get('/{user}/edit' , [UserController::class , 'edit'])->name('admin.users.edit');
         Route::put('/{user}/update' , [UserController::class , 'update'])->name('admin.users.update');
+        Route::put('/{user}/deactivate', [UserController::class, 'deactivateUser'])->name('admin.users.deactivate');
+
     });
     /* For suppliers */
     Route::prefix('/suppliers')->group(function(){
@@ -108,6 +110,7 @@ Route::prefix('/admin')->group(function(){
     Route::prefix('/payments')->group(function(){
         Route::get('' , [PaymentController::class , 'index'])->name('admin.payments.index');
     });
+
 });
 
 /** Authentication routes **/

@@ -160,4 +160,12 @@ class UserController extends Controller
             'address' => 'required|string|max:255',
         ]);
     }
+
+    public function deactivateUser(User $user)
+    {
+        $user->update(['is_active' => false]);
+
+        return redirect()->back()->with('success', 'User deactivated successfully');
+    }   
+
 }
